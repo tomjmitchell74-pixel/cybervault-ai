@@ -1,0 +1,253 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #04060b;
+  --color-abyss: #070a11;
+  --color-panel: #0a0e16;
+  --color-card: #0d121d;
+  --color-raise: #131a28;
+  --color-mist: #edf1f7;
+  --color-dim: #9aa5b7;
+  --color-faint: #5b6579;
+  --color-pulse: #5cf0c8;
+  --color-pulse-deep: #1ec99b;
+  --color-volt: #8b7cff;
+  --color-ember: #ffb86b;
+
+  --font-display: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", monospace;
+  --font-accent: var(--font-serif-acc), ui-serif, Georgia, serif;
+
+  --animate-marquee: marquee 46s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-float-slow: float 11s ease-in-out infinite;
+  --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
+  --animate-scan-line: scan-line 5s linear infinite;
+  --animate-spin-slow: spin 14s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-14px);
+    }
+  }
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgba(92, 240, 200, 0.55);
+    }
+    50% {
+      opacity: 0.75;
+      box-shadow: 0 0 0 7px rgba(92, 240, 200, 0);
+    }
+  }
+  @keyframes scan-line {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(900%);
+      opacity: 0;
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-void font-body text-mist antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: rgba(92, 240, 200, 0.85);
+    color: #04060b;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #070a11;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1b2434;
+    border-radius: 8px;
+    border: 2px solid #070a11;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2a3750;
+  }
+  input,
+  textarea,
+  select {
+    @apply outline-none;
+  }
+  input:-webkit-autofill {
+    -webkit-text-fill-color: #edf1f7;
+    -webkit-box-shadow: 0 0 0 60px #0d121d inset;
+    transition: background-color 9999s ease-in-out 0s;
+  }
+}
+
+/* ---------- surfaces ---------- */
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.bg-blueprint {
+  background-image:
+    linear-gradient(rgba(148, 178, 220, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 178, 220, 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.glass {
+  background: linear-gradient(180deg, rgba(19, 26, 40, 0.6), rgba(10, 14, 22, 0.85));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+@utility hairline {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@utility panel {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  background-color: var(--color-card);
+}
+
+/* ---------- type ---------- */
+
+.display-xl {
+  font-family: var(--font-display);
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.kicker {
+  @apply font-mono text-[11px] tracking-[0.28em] uppercase;
+}
+
+.text-gradient-pulse {
+  background: linear-gradient(100deg, #5cf0c8 0%, #8b7cff 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- buttons & inputs ---------- */
+
+@utility btn {
+  @apply relative inline-flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full font-display text-sm font-semibold tracking-tight transition-all duration-300;
+}
+
+.btn-primary {
+  @apply btn bg-pulse px-6 py-3 text-void;
+  box-shadow: 0 0 0 0 rgba(92, 240, 200, 0.4);
+}
+.btn-primary:hover {
+  box-shadow: 0 12px 40px -8px rgba(92, 240, 200, 0.55);
+  transform: translateY(-1px);
+}
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.55) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+}
+.btn-primary:hover::after {
+  transform: translateX(120%);
+}
+
+.btn-ghost {
+  @apply btn hairline px-6 py-3 text-mist;
+  background: rgba(255, 255, 255, 0.03);
+}
+.btn-ghost:hover {
+  @apply border-white/25;
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateY(-1px);
+}
+
+.btn-disabled {
+  @apply pointer-events-none opacity-40;
+}
+
+.input-dark {
+  @apply w-full rounded-xl border border-white/10 bg-panel px-4 py-3 text-sm text-mist placeholder:text-faint transition-colors duration-200;
+}
+.input-dark:focus {
+  border-color: rgba(92, 240, 200, 0.55);
+  box-shadow: 0 0 0 3px rgba(92, 240, 200, 0.12);
+}
+
+.field-label {
+  @apply mb-2 block font-mono text-[10px] tracking-[0.22em] text-faint uppercase;
+}
+
+/* ---------- product cards ---------- */
+
+.agent-card {
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.45s,
+    box-shadow 0.45s;
+}
+.agent-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 24px 60px -24px rgba(0, 0, 0, 0.9),
+    0 0 0 1px var(--card-glow, rgba(92, 240, 200, 0.25)),
+    0 12px 48px -16px var(--card-glow, rgba(92, 240, 200, 0.22));
+}
+
+.img-zoom {
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.agent-card:hover .img-zoom {
+  transform: scale(1.06);
+}
+
+/* ---------- misc ---------- */
+
+.marquee-mask {
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+
+.vignette {
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, transparent 40%, #04060b 100%);
+}
+
+.drawer-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #1b2434 transparent;
+}
